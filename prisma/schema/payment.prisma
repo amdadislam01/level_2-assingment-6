@@ -1,0 +1,38 @@
+// Payment & Subscription Models
+
+model Payment {
+  id              String        @id @default(uuid())
+  transactionId   String        @unique
+  amount          Float
+  currency        String        @default("USD")
+  paymentMethod   PaymentMethod
+  status          PaymentStatus @default(PENDING)
+  userId          String
+  organizationId  String?
+  plan            SubscriptionPlan
+  gatewayResponse Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([transactionId])
+  @@index([status])
+}
+
+model Subscription {
+  id             String           @id @default(uuid())
+  organizationId String
+  plan           SubscriptionPlan @default(FREE)
+  startDate      DateTime         @default(now())
+  endDate        DateTime?
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}

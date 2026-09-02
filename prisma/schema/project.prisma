@@ -1,0 +1,25 @@
+// Project Model
+
+model Project {
+  id             String        @id @default(uuid())
+  name           String
+  key            String        // Short key e.g. "PROJ"
+  description    String?
+  organizationId String
+  teamId         String?
+  managerId      String?
+  status         ProjectStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  team           Team?         @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  manager        User?         @relation("ProjectManager", fields: [managerId], references: [id], onDelete: SetNull)
+  sprints        Sprint[]
+  tasks          Task[]
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([key])
+}

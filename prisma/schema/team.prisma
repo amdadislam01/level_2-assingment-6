@@ -1,0 +1,29 @@
+// Team & TeamMember Models
+
+model Team {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members        TeamMember[]
+  projects       Project[]
+
+  @@index([organizationId])
+}
+
+model TeamMember {
+  id           String             @id @default(uuid())
+  teamId       String
+  orgMemberId String
+
+  team         Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  orgMember    OrganizationMember @relation(fields: [orgMemberId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, orgMemberId])
+  @@index([teamId])
+}

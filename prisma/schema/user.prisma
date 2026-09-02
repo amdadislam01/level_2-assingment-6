@@ -1,0 +1,30 @@
+// User Model
+
+model User {
+  id              String      @id @default(uuid())
+  name            String
+  email           String      @unique
+  password        String?
+  avatarUrl       String?
+  googleId        String?     @unique
+  role            UserRole    @default(MEMBER)
+  isEmailVerified Boolean     @default(false)
+  isActive        Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  deletedAt       DateTime?
+
+  // Relationships
+  ownedOrganizations Organization[]       @relation("OrgOwner")
+  orgMemberships     OrganizationMember[]
+  managedProjects    Project[]            @relation("ProjectManager")
+  assignedTasks      Task[]               @relation("TaskAssignee")
+  createdTasks       Task[]               @relation("TaskCreator")
+  subtasks           Subtask[]
+  comments           Comment[]
+  activityLogs       ActivityLog[]
+  payments           Payment[]
+
+  @@index([email])
+  @@index([role])
+}
