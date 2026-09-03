@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { sendResponse } from '../utils/sendResponse.js';
+import { authRoutes } from '../modules/auth/auth.route.js';
+import { userRoutes } from '../modules/user/user.route.js';
 
 const router = Router();
 
@@ -16,5 +18,19 @@ router.get('/health', (req, res) => {
     },
   });
 });
+
+// Module Routers
+const moduleRoutes = [
+  {
+    path: '/auth',
+    route: authRoutes,
+  },
+  {
+    path: '/users',
+    route: userRoutes,
+  },
+];
+
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
 
 export default router;
