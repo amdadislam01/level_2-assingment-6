@@ -2,6 +2,11 @@ import { Router } from 'express';
 import { sendResponse } from '../utils/sendResponse.js';
 import { authRoutes } from '../modules/auth/auth.route.js';
 import { userRoutes } from '../modules/user/user.route.js';
+import { organizationRoutes } from '../modules/organization/organization.route.js';
+import { projectRoutes } from '../modules/project/project.route.js';
+import { sprintRoutes } from '../modules/sprint/sprint.route.js';
+import { taskRoutes } from '../modules/task/task.route.js';
+import { activityLogRoutes } from '../modules/activityLog/activityLog.route.js';
 
 const router = Router();
 
@@ -28,6 +33,26 @@ const moduleRoutes = [
   {
     path: '/users',
     route: userRoutes,
+  },
+  {
+    path: '/organizations',
+    route: organizationRoutes,
+  },
+  {
+    path: '/projects',
+    route: projectRoutes,
+  },
+  {
+    path: '/sprints',
+    route: sprintRoutes,
+  },
+  {
+    path: '/tasks',
+    route: taskRoutes,
+  },
+  {
+    path: '/activity-logs',
+    route: activityLogRoutes,
   },
 ];
 
