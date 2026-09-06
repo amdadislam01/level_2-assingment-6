@@ -7,6 +7,7 @@ import { projectRoutes } from '../modules/project/project.route.js';
 import { sprintRoutes } from '../modules/sprint/sprint.route.js';
 import { taskRoutes } from '../modules/task/task.route.js';
 import { activityLogRoutes } from '../modules/activityLog/activityLog.route.js';
+import { paymentRoutes } from '../modules/payment/payment.route.js';
 
 const router = Router();
 
@@ -53,6 +54,10 @@ const moduleRoutes = [
   {
     path: '/activity-logs',
     route: activityLogRoutes,
+  },
+  {
+    path: '/payments',
+    route: paymentRoutes,
   },
 ];
 

@@ -8,6 +8,8 @@ import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 import { notFound } from './middlewares/notFound.js';
 import { sendResponse } from './utils/sendResponse.js';
 
+import { apiRateLimiter } from './middlewares/rateLimiter.js';
+
 const app: Application = express();
 
 // Security Middlewares
@@ -18,6 +20,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Rate Limiting
+app.use('/api/v1', apiRateLimiter);
 
 // Request Parsing & Logging
 app.use(express.json());
