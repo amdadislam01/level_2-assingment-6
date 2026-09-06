@@ -1,0 +1,713 @@
+{
+	"info": {
+		"_postman_id": "a6b7c8d9-e0f1-4234-89ab-cdef01234567",
+		"name": "Project Management SaaS RESTful API",
+		"description": "Complete Postman collection for Enterprise-grade Project Management SaaS backend (37 API Endpoints across 8 Modules)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "managerToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "memberToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"MEMBER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login User (Admin / Manager / Member)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@saas.com\",\n  \"password\": \"Admin@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh-token",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "refresh-token"]
+						}
+					}
+				},
+				{
+					"name": "Google Social Login (GCP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"mock_gcp_google_id_token_12345\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/google",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "google"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Current User Profile (/me)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "Update Current User Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"System Admin Updated\",\n  \"avatarUrl\": \"https://example.com/avatar.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "Get All Users (Admin / Manager only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users?page=1&limit=10&search=saas",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "search", "value": "saas" }
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Organizations",
+			"item": [
+				{
+					"name": "Create Organization (Admin / Manager)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"TechCorp Global\",\n  \"slug\": \"techcorp-global\",\n  \"logoUrl\": \"https://example.com/logo.png\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/organizations",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations"]
+						}
+					}
+				},
+				{
+					"name": "Get All Organizations (Paginated & Filtered)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/organizations?page=1&limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Organization By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/organizations/org_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations", "org_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Update Organization (Admin / Manager)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"TechCorp Enterprises\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/organizations/org_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations", "org_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Delete Organization (Soft Delete - Admin only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/organizations/org_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations", "org_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Add Member to Organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userEmail\": \"member@saas.com\",\n  \"role\": \"MEMBER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/organizations/org_id_here/members",
+							"host": ["{{baseUrl}}"],
+							"path": ["organizations", "org_id_here", "members"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Create Project (Admin / Manager)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{managerToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Mobile App Redesign\",\n  \"key\": \"MAR\",\n  \"description\": \"Flutter mobile app re-architecture\",\n  \"organizationId\": \"org_id_here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/projects",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects"]
+						}
+					}
+				},
+				{
+					"name": "Get All Projects (Filterable & Searchable)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects?page=1&limit=10&status=ACTIVE&search=Mobile",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "ACTIVE" },
+								{ "key": "search", "value": "Mobile" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Project By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects/project_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "project_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{managerToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Mobile App Redesign v2\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/projects/project_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "project_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Delete Project (Soft Delete - Admin only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects/project_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "project_id_here"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sprints",
+			"item": [
+				{
+					"name": "Create Sprint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{managerToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Sprint 2 - Payment Gateway\",\n  \"goal\": \"Integrate Stripe and bKash APIs\",\n  \"projectId\": \"project_id_here\",\n  \"startDate\": \"2026-09-07T00:00:00.000Z\",\n  \"endDate\": \"2026-09-21T00:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sprints",
+							"host": ["{{baseUrl}}"],
+							"path": ["sprints"]
+						}
+					}
+				},
+				{
+					"name": "Get Sprints By Project ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/sprints/project/project_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["sprints", "project", "project_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Update Sprint Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{managerToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sprints/sprint_id_here/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["sprints", "sprint_id_here", "status"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Implement Webhook Endpoint\",\n  \"description\": \"Handle Stripe payment callback events\",\n  \"priority\": \"HIGH\",\n  \"status\": \"TODO\",\n  \"projectId\": \"project_id_here\",\n  \"sprintId\": \"sprint_id_here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks"]
+						}
+					}
+				},
+				{
+					"name": "Get All Tasks (Filtered by Status/Priority/Sprint)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tasks?page=1&limit=10&status=TODO&priority=HIGH",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "TODO" },
+								{ "key": "priority", "value": "HIGH" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Task By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Update Task Details",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Implement Webhook & Signature Verification\",\n  \"priority\": \"URGENT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Update Task Status (State Transition)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"IN_PROGRESS\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here", "status"]
+						}
+					}
+				},
+				{
+					"name": "Delete Task (Admin / Manager)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{managerToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Add Comment to Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"I have finished the webhook signature verification logic.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here/comments",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here", "comments"]
+						}
+					}
+				},
+				{
+					"name": "Add Subtask to Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Verify Stripe-Signature Header\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/task_id_here/subtasks",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "task_id_here", "subtasks"]
+						}
+					}
+				},
+				{
+					"name": "Toggle Subtask Completion",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{memberToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tasks/subtasks/subtask_id_here/toggle",
+							"host": ["{{baseUrl}}"],
+							"path": ["tasks", "subtasks", "subtask_id_here", "toggle"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Activity Logs",
+			"item": [
+				{
+					"name": "Get Audit Activity Logs (Admin / Manager)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/activity-logs?page=1&limit=10&action=PROJECT_CREATED",
+							"host": ["{{baseUrl}}"],
+							"path": ["activity-logs"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "action", "value": "PROJECT_CREATED" }
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Initiate Payment Checkout Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 49.99,\n  \"currency\": \"USD\",\n  \"paymentMethod\": \"STRIPE\",\n  \"plan\": \"PRO\",\n  \"organizationId\": \"org_id_here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/initiate",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "initiate"]
+						}
+					}
+				},
+				{
+					"name": "Verify Payment Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sessionId\": \"cs_test_mock_12345\",\n  \"transactionId\": \"TXN-DEMO-20260902-001\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/verify",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "verify"]
+						}
+					}
+				},
+				{
+					"name": "Payment Gateway Webhook (Public)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "stripe-signature", "value": "t=12345,v1=mock_signature" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"checkout.session.completed\",\n  \"data\": {\n    \"object\": {\n      \"id\": \"cs_test_mock_12345\",\n      \"payment_status\": \"paid\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/webhook",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "webhook"]
+						}
+					}
+				},
+				{
+					"name": "Get Payment Stats Summary (Admin only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/payments/stats/summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "stats", "summary"]
+						}
+					}
+				},
+				{
+					"name": "Get Payment By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/payments/payment_id_here",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "payment_id_here"]
+						}
+					}
+				},
+				{
+					"name": "Get All Payments (Paginated & Status Filter)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/payments?page=1&limit=10&status=COMPLETED",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "COMPLETED" }
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
