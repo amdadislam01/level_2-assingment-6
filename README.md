@@ -226,8 +226,3 @@ Update Payment Status (COMPLETED) + Upgrade Org Plan (PRO/ENTERPRISE) + Audit Lo
    ```bash
    vercel --prod
    ```
-
----
-
-## 📝 License
-This project is submitted for Level 2 Assignment 6 evaluation under standard academic/course guidelines.
