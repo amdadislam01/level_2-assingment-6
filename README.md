@@ -16,7 +16,7 @@
 Project Name : Project Management SaaS Backend API
 Backend Repo : https://github.com/amdadislam01/level_2-assingment-6
 Live API     : https://project-management-saas-backend.vercel.app
-API Docs     : https://github.com/amdadislam01/level_2-assingment-6/blob/main/postman_collection.json
+API Docs     : https://ayanahmedamdad-928040.postman.co/workspace/MD-Amdad-Islam's-Workspace~3f1499a7-f76b-48e7-8490-3698727f72ca/collection/56313778-af095689-5a75-4702-8064-fdbc99d8d64b?action=share&source=copy-link&creator=56313778
 Demo Video   : https://drive.google.com/file/d/demo_video_link/view
 Admin Email  : admin@saas.com
 Admin Password : Admin@123456
