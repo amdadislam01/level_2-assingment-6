@@ -6,8 +6,8 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 export const env = {
   port: process.env.PORT || 5000,
   nodeEnv: process.env.NODE_ENV || 'development',
-  databaseUrl: process.env.DATABASE_URL,
-  directUrl: process.env.DIRECT_URL,
+  databaseUrl: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/project_saas?schema=public',
+  directUrl: process.env.DIRECT_URL || process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/project_saas?schema=public',
   jwt: {
     secret: process.env.JWT_SECRET || 'super-secret-jwt-key-project-saas-2026',
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'super-secret-refresh-key-project-saas-2026',
