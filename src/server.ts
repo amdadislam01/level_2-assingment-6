@@ -49,3 +49,6 @@ process.on('SIGTERM', () => {
 });
 
 bootstrap();
+
+export default app;
+
